@@ -5,6 +5,17 @@ from django.utils.text import slugify
 
 # Create your models here.
 
+class Country(models.Model):
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=2)
+    
+    
+    def __str__(self):
+        return '%s' % (self.name)
+     
+    class Meta:
+        verbose_name_plural = "countries"
+
 class Address(models.Model):
     street = models.CharField(max_length=80)
     postal_code = models.CharField(max_length=5)
@@ -38,7 +49,7 @@ class Book(models.Model):
     is_bestselling = models.BooleanField(default=False)
     slug = models.SlugField(default="", blank=True, null=False, db_index=True)#database make it easier to be found
     #blank = True, editable = False tells the database that this field can be saved empty/ not editable
-    
+    country = models.ManyToManyField(Country)
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)
     #     super().save(*args, **kwargs) this method overrides the save method so that i can work with the title as slug
